@@ -1,9 +1,7 @@
 #include "Matrix.h"
+#include "Game.h"
 
-Matrix matrix;
-unsigned long previousMillis = 0;
-const long interval = 100;
-
+/*Matrix matrix;
 int count = 0;
 int dirChange = 5;
 int dirChangeIn = 5;
@@ -19,19 +17,24 @@ void updateDrawing() {
     dirChangeIn = dirChange;
   }
 }
+*/
+
+Game game;
+
+unsigned long previousMillis = 0;
+const long interval = 100;
 
 void setup() {
-  
+
 }
 
 void loop() {
 
   unsigned long currentMillis = millis();
   if(currentMillis - previousMillis >= interval){
-    matrix.clear();
-    updateDrawing();
+    game.updateDrawing();
+    game.updateLogic();
     previousMillis = currentMillis;
   }
-  
-  matrix.render();
+  game.draw();
 }

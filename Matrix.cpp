@@ -159,7 +159,7 @@ void Matrix::drawLine(int x1, int y1, int x2, int y2) {
     }else{
 
       for(int y = miny; y>maxy; y--) {
-        drawPixe(floor(x + 0.5),y);
+        drawPixel(floor(x + 0.5),y);
         x = x - dx;
       }
 
