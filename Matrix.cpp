@@ -3,7 +3,7 @@
 
 const int CADD = 8;
 const int CRES = 9;
-const int ROWS[5] = {1,2,3,4,5};
+const int ROWS[5] = {2,3,4,5,6};
 
 int mat[5][5] = {
   {0,0,0,0,0},
