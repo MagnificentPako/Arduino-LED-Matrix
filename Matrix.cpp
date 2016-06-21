@@ -107,34 +107,66 @@ void Matrix::drawBoxFilled(int x1, int y1, int x2, int y2) {
 }
 
 //Zeichnet eine Linie
-//http://c.happycodings.com/games-and-graphics/code18.html
 void Matrix::drawLine(int x1, int y1, int x2, int y2) {
-  int dx, dy, p ,end;
-  float x, y;
 
-  dx = abs(x1 - x2);
-  dy = abs(y1 -  y2);
-  p = 2 * dy - dx;
-  if(x1 > x2) {
-    x = x2;
-    y = y2;
-     end = x1;
+  int sx, sy, ex, ey, minx, miny, maxx, maxy, xdiff, ydiff;
+
+  sx = floor(x1);
+  sy = floor(y1);
+  ex = floor(x2);
+  ey = floor(y2);
+
+  if(sx == ex && sy == ey) {
+    drawPixel(sx,sy);
+    return;
+  }
+
+  minx = sx > ex ? ex : sx;
+
+  if(minx == sx) {
+    miny = sy;
+    maxx = ex;
+    maxy = ey;
   }else{
-    x = x1;
-    y = y1;
-    end = x2;
+    miny = ey;
+    maxx = sx;
+    maxy = sy;
   }
-  drawPixel(x,y);
-  while(x < end) {
-    x += 1;
-    if(p < 0) {
-      p = p+2*dy;
-    }else{
-      y = y+1;
-      p = p+2*(dy-dx);
+
+  xdiff = maxx - minx;
+  ydiff = maxy - miny;
+
+  if(xdiff > abs(ydiff)) {
+
+    int y = miny;
+    int dy = ydiff / xdiff;
+    for(int x = minx; x < maxx; x++) {
+      drawPixel(x, floor(y + 0.5));
+      y = y + dy;
     }
-    drawPixel(x,y);
+
+  }else{
+
+    int x = minx;
+    int dx = xdiff / ydiff;
+    if(maxy >= miny) {
+
+      for(int y = miny; y < maxy; y++) {
+        drawPixel(floor(x+ 0.5),y);
+        x = x + dx;
+      }
+
+    }else{
+
+      for(int y = miny; y>maxy; y--) {
+        drawPixe(floor(x + 0.5),y);
+        x = x - dx;
+      }
+
+    }
+
   }
+
 }
 
 //Constructor and Destructor
