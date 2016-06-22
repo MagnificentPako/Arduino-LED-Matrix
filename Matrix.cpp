@@ -169,6 +169,24 @@ void Matrix::drawLine(int x1, int y1, int x2, int y2) {
 
 }
 
+void Matrix::drawArray(int matr[5][5]) {
+  for(int i = 0; i<5; i++) {
+    for(int j = 0; j<5; j++) {
+      setPixel(j,i, matr[i][j]);
+    }
+  }
+}
+
+void Matrix::drawArrayAtPosition(int matr[5][5], int x, int y) {
+  for(int i = 0; i<5; i++) {
+    for(int j = 0; j<5; j++) {
+      if(i+x >= 0 && j+y >= 0 && i+x <= 4 && j+y <= 4) {
+        setPixel(y+i,x+j,matr[i][j]);
+      }
+    }
+  }
+}
+
 //Constructor and Destructor
 Matrix::Matrix() {
   pinMode(CADD, OUTPUT);
