@@ -49,9 +49,6 @@ int numbers[4][5][5] = {
   }
 };
 
-int player[2] = {2,2}; //x,y
-int apple[2] = {floor(random(5)),floor(random(5))}; //x,y
-int direction = 0; // 0 = up, 1 = right, 2 = down, 3 = right
 boolean ingame = false;
 
 //menu specific
@@ -62,11 +59,14 @@ int transitionInPosition = 4;
 int transAdd = 0;
 
 //game specific
+int player[2] = {2,2}; //x,y
+int apple[2] = {floor(random(5)+0.5),floor(random(5)+0.5)}; //x,y
+int direction = 0; // 0 = up, 1 = right, 2 = down, 3 = right
 long oldMillis = 0;
-long interv;
+long interv; //Wird im Menü gesetzt.
 int trailLength = 0;
-int trailPositions[25][2] = {}; //Es wird niemals mehr als 25 sein.
-
+int positionBuffer[25][2] = {}; //Weil der trail eh nur 25 sein kann lohnt es sich nicht mehr Speicher ein zu nehmen.
+int bufferPos = -1;
 /*                                             */
 
 void Game::updateLogic() {
@@ -85,29 +85,15 @@ void Game::updateLogic() {
     int ox = player[0];
     int oy = player[1];
 
+
     if(player[0] == apple[0] && player[1] == apple[1]) {
       apple[0] = floor(random(5));
       apple[1] = floor(random(5));
-      trailPositions[trailLength][0] = ox;
-      trailPositions[trailLength][1] = oy;
-      trailLength += 1;
+      //trailLength += 1;
     }
 
     if(currentMillis-oldMillis >= interv) {
       oldMillis = currentMillis;
-
-      int trailBuffer[25][2];
-      for(int i = 1; i < trailLength; i++) {
-        trailBuffer[i-1][0] = trailPositions[i][0];
-        trailBuffer[i-1][1]= trailPositions[i][1];
-        trailBuffer[trailLength][0] = player[0];
-        trailBuffer[trailLength][1] = player[1];
-      }
-
-      for(int i = 0; i < trailLength; i++) {
-        trailPositions[i][0] = trailBuffer[i][0];
-        trailPositions[i][1] = trailBuffer[i][1];
-      }
 
       switch(direction) {
         case 0: {
@@ -191,7 +177,10 @@ void Game::updateDrawing() {
     matrix.drawPixel(apple[0], apple[1]);
     if(trailLength > 0) {
       for(int i = 0; i < trailLength; i++) {
-        matrix.drawPixel(trailPositions[i][0],trailPositions[i][1]);
+        matrix.drawPixel(
+          positionBuffer[i][0],
+          positionBuffer[i][1]
+        );
       }
     }
   }else{
@@ -210,7 +199,7 @@ void Game::updateDrawing() {
 //Constructor
 Game::Game() {
   lastMillis = millis();
-  randomSeed(analogRead(1));
+  //randomSeed(analogRead(1));
 }
 
 Game::~Game() {}
